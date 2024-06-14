@@ -1,7 +1,6 @@
 package org.thu.flashcards;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,9 +66,17 @@ public class DeckListAdapter extends BaseAdapter {
         btnEdit.setOnClickListener(v -> showEditDialog(position, context));
 
         btnStudy.setOnClickListener(v -> {
-            Intent intent = new Intent(context, FlashcardActivity.class);
-            intent.putExtra("deck", entry);
-            context.startActivity(intent);
+            if (entry.getFlashcards().isEmpty()) {
+                new AlertDialog.Builder(context)
+                        .setTitle("Deck is empty")
+                        .setMessage("Please add flashcards first.")
+                        .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
+                        .show();
+            } else {
+                Intent intent = new Intent(context, FlashcardActivity.class);
+                intent.putExtra("deck", entry);
+                context.startActivity(intent);
+            }
         });
 
         btnDelete.setOnClickListener(v -> {

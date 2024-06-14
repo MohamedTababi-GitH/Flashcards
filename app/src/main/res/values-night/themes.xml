@@ -4,4 +4,11 @@
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
     </style>
+
+    <!-- Style for the overflow button -->
+    <style name="MyOverflowButtonStyle" parent="@style/Widget.AppCompat.ActionButton.Overflow">
+        <!-- Set your custom icon here -->
+        <item name="android:src">@drawable/ic_action_name</item>
+        <item name="android:tint">@android:color/black</item>
+    </style>
 </resources>

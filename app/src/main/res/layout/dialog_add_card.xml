@@ -9,13 +9,13 @@
         android:id="@+id/input_question"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter Question"
+        android:hint="@string/enter_question"
         android:inputType="text" />
 
     <EditText
         android:id="@+id/input_answer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter Answer"
+        android:hint="@string/enter_answer"
         android:inputType="text" />
 </LinearLayout>
