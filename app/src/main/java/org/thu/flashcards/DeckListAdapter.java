@@ -59,9 +59,9 @@ public class DeckListAdapter extends BaseAdapter {
         Button btnStudy = convertView.findViewById(R.id.btn_study);
         btnStudy.setText("Study");
         Button btnEdit = convertView.findViewById(R.id.btn_edit);
-        btnEdit.setText("Edit");
+
         Button btnDelete = convertView.findViewById(R.id.btn_delete);
-        btnDelete.setText("Delete");
+        Button btnStats = convertView.findViewById(R.id.btn_stats);
 
         btnEdit.setOnClickListener(v -> showEditDialog(position, context));
 
@@ -79,8 +79,40 @@ public class DeckListAdapter extends BaseAdapter {
             }
         });
 
+
+        btnStats.setOnClickListener(v -> {
+            int cardCount = entry.getFlashcards().size();
+            int studyCount = entry.getStudyCount();
+            long lastStudyTime = entry.getLastStudyTime();
+            String lastStudyTimeStr = lastStudyTime == 0 ? "Never" : new java.text.SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new java.util.Date(lastStudyTime));
+
+            String recommendation = "You should study again soon.";
+            if (lastStudyTime > 0) {
+                long currentTime = System.currentTimeMillis();
+                long timeSinceLastStudy = currentTime - lastStudyTime;
+                long hoursSinceLastStudy = timeSinceLastStudy / (1000 * 60 * 60);
+                if (hoursSinceLastStudy < 24) {
+                    recommendation = "You should study again in " + (24 - hoursSinceLastStudy) + " hours.";
+                } else {
+                    recommendation = "It's been " + hoursSinceLastStudy + " hours since your last study session. Time to study again!";
+                }
+            }
+
+            String message = "Deck Name: " + entry.getName() + "\n" +
+                    "Number of flashcards: " + cardCount + "\n" +
+                    "Number of times studied: " + studyCount + "\n" +
+                    "Last studied: " + lastStudyTimeStr + "\n" +
+                    recommendation;
+
+            new AlertDialog.Builder(context)
+                    .setTitle("Deck Statistics")
+                    .setMessage(message)
+                    .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
+                    .show();
+        });
+
+
         btnDelete.setOnClickListener(v -> {
-            // Handle delete button click here
             data.remove(position);
             notifyDataSetChanged();
             Toast.makeText(context, "Deck deleted", Toast.LENGTH_SHORT).show();

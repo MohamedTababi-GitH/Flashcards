@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="8dp"
+    >
 
     <TextView
         android:id="@+id/deck_name"
@@ -22,19 +24,37 @@
         android:layout_weight="1">
 
     </Button>
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_edit"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        app:iconTint="@color/black"
         app:icon="@drawable/edit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        app:iconSize="30dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_weight="1"/>
 
 
-    <Button
-        android:id="@+id/btn_delete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1">
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_stats"
+        app:icon="@drawable/stats"
+        app:iconTint="@color/black"
+        app:iconSize="30dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_weight="1"/>
 
-    </Button>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_delete"
+        app:icon="@drawable/delete"
+        app:iconTint="@color/red"
+        app:iconSize="30dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_weight="1"/>
+
+
 </LinearLayout>

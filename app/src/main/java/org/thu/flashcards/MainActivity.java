@@ -54,6 +54,9 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         DeckEntry firstEntry = new DeckEntry("first deck");
         DeckEntry.DeckEntries.add(firstEntry);
+        firstEntry.addFlashcard(new Flashcard("first","one"));
+        firstEntry.addFlashcard(new Flashcard("first","one"));
+        firstEntry.addFlashcard(new Flashcard("first","one"));
         adapter = new DeckListAdapter(DeckEntry.DeckEntries);
         ListView listView = (ListView)findViewById(R.id.deck_list);
         listView.setAdapter(adapter);
@@ -63,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         clearAllBtn.setOnClickListener(view ->{
             showClearListConfirmationDialog();
         });
+
 
         // Fab decleration and Onclick method
         FloatingActionButton fab = findViewById(R.id.fab);

@@ -1,9 +1,11 @@
 package org.thu.flashcards;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
@@ -15,6 +17,8 @@ public class FlashcardActivity extends AppCompatActivity {
     private TextView questionTextView;
     private TextView answerTextView;
     private TextView cardNumber;
+    private Button nextButton;
+    private DeckEntry deck;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,10 +28,13 @@ public class FlashcardActivity extends AppCompatActivity {
         questionTextView = findViewById(R.id.questionTextView);
         answerTextView = findViewById(R.id.answerTextView);
         cardNumber = findViewById(R.id.text_card_number);
-        Button nextButton = findViewById(R.id.nextButton);
+        nextButton = findViewById(R.id.nextButton);
         Button backButton = findViewById(R.id.backButton);
 
-        DeckEntry deck = (DeckEntry) getIntent().getSerializableExtra("deck");
+        nextButton.setBackgroundColor(getResources().getColor(R.color.dark_green));
+        backButton.setBackgroundColor(getResources().getColor(R.color.dark_green));
+
+        deck = (DeckEntry) getIntent().getSerializableExtra("deck");
 
         if (deck != null) {
             flashcards = deck.getFlashcards();
@@ -36,17 +43,17 @@ public class FlashcardActivity extends AppCompatActivity {
         if (flashcards != null && !flashcards.isEmpty()) {
             displayFlashcard(currentIndex);
         }
-        // Set up click listener for answerTextView
-        answerTextView.setOnClickListener(v -> {
-            // Display the actual answer when tapped
-            revealAnswer();
-        });
+
+        answerTextView.setOnClickListener(v -> revealAnswer());
 
         nextButton.setOnClickListener(v -> {
             if (currentIndex < flashcards.size() - 1) {
                 currentIndex++;
                 displayFlashcard(currentIndex);
+            } else {
+                showFinishConfirmation();
             }
+            updateNextButton();
         });
 
         backButton.setOnClickListener(v -> {
@@ -54,20 +61,49 @@ public class FlashcardActivity extends AppCompatActivity {
                 currentIndex--;
                 displayFlashcard(currentIndex);
             }
+            updateNextButton();
         });
+
+        updateNextButton();
     }
 
     private void displayFlashcard(int index) {
         Flashcard flashcard = flashcards.get(index);
         questionTextView.setText(flashcard.getQuestion());
         answerTextView.setText(R.string.tap_to_reveal);
-        cardNumber.setText((currentIndex+1)+ " / " + flashcards.size() );
+        cardNumber.setText((currentIndex + 1) + " / " + flashcards.size());
     }
+
     private void revealAnswer() {
-        // Get the current flashcard
         Flashcard flashcard = flashcards.get(currentIndex);
-        // Set the answerTextView text to the actual answer
         answerTextView.setText(flashcard.getAnswer());
     }
 
+    private void updateNextButton() {
+        if (currentIndex == flashcards.size() - 1) {
+            nextButton.setText("Finish");
+            nextButton.setBackgroundColor(getResources().getColor(R.color.red));
+        }
+        else {
+            nextButton.setText(R.string.next_btn);
+            nextButton.setBackgroundColor(getResources().getColor(R.color.dark_green));
+        }
+    }
+
+    private void showFinishConfirmation() {
+        new AlertDialog.Builder(this)
+                .setTitle("Finish Study Session")
+                .setMessage("Do you want to finish studying?")
+                .setPositiveButton("Yes", (dialog, which) -> finishStudySession())
+                .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
+                .show();
+    }
+
+    private void finishStudySession() {
+        deck.incrementStudyCount();
+        Intent intent = new Intent(FlashcardActivity.this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
+    }
 }
