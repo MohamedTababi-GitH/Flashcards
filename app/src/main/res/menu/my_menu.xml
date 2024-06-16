@@ -20,5 +20,10 @@
         android:id="@+id/menu_add_deck"
         />
 
+    <item
+        android:title="@string/import_deck"
+        android:id="@+id/menu_import_deck"
+        />
+
 
 </menu>

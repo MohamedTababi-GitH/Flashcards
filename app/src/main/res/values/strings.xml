@@ -11,4 +11,7 @@
     <string name="add_deck">Add deck</string>
     <string name="add_card">Add card</string>
     <string name="share">Share</string>
+    <string name="import_deck">Import deck</string>
+    <string name="study">Study</string>
+    <string name="finish_btn">Finish</string>
 </resources>

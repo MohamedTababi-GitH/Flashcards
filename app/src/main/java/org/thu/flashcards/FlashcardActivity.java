@@ -1,13 +1,10 @@
 package org.thu.flashcards;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
 import java.util.ArrayList;
 
 public class FlashcardActivity extends AppCompatActivity {
@@ -35,7 +32,6 @@ public class FlashcardActivity extends AppCompatActivity {
         backButton.setBackgroundColor(getResources().getColor(R.color.dark_green));
 
         deck = (DeckEntry) getIntent().getSerializableExtra("deck");
-
         if (deck != null) {
             flashcards = deck.getFlashcards();
         }
@@ -81,7 +77,7 @@ public class FlashcardActivity extends AppCompatActivity {
 
     private void updateNextButton() {
         if (currentIndex == flashcards.size() - 1) {
-            nextButton.setText("Finish");
+            nextButton.setText(R.string.finish_btn);
             nextButton.setBackgroundColor(getResources().getColor(R.color.red));
         }
         else {
@@ -100,10 +96,6 @@ public class FlashcardActivity extends AppCompatActivity {
     }
 
     private void finishStudySession() {
-        deck.incrementStudyCount();
-        Intent intent = new Intent(FlashcardActivity.this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
-        finish();
-    }
+            finish();
+        }
 }

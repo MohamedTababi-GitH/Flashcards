@@ -17,13 +17,19 @@ public class DeckEntry implements Serializable {
     public String name;
     int studyCount;
     long lastStudyTime;
+    public DeckEntry(String name){
+        this.flashcards = new ArrayList<>();
+        this.name=name;
+        this.studyCount = 0;
+        this.lastStudyTime = 0;
+    }
 
     public int getStudyCount() {
         return studyCount;
     }
 
     public void incrementStudyCount() {
-        studyCount++;
+        studyCount = studyCount + 1;
     }
 
     public long getLastStudyTime() {
@@ -34,12 +40,7 @@ public class DeckEntry implements Serializable {
         this.lastStudyTime = lastStudyTime;
     }
 
-    public DeckEntry(String name){
-        this.flashcards = new ArrayList<>();
-        this.name=name;
-        this.studyCount = 0;
-        this.lastStudyTime = 0;
-    }
+
 
     public ArrayList<Flashcard> getFlashcards() {
         return flashcards;

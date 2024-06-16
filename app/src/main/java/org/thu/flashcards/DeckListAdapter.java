@@ -20,7 +20,7 @@ public class DeckListAdapter extends BaseAdapter {
     ArrayList<DeckEntry> data;
     public DeckListAdapter(ArrayList<DeckEntry> data) {
 
-        this.data = DeckEntry.DeckEntries;
+        this.data = data;
     }
 
 
@@ -42,22 +42,17 @@ public class DeckListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Context context = parent.getContext();
-        // Get data
         DeckEntry entry = data.get(position);
 
-
         if (convertView == null){
-            // Create UI views from layout
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.deck_entry_item, null, false);
         }
 
         TextView name = convertView.findViewById(R.id.deck_name);
-        //rate.setText("rate: " + String.valueOf(entry.exchangeRate));
         name.setText(entry.name);
 
         Button btnStudy = convertView.findViewById(R.id.btn_study);
-        btnStudy.setText("Study");
         Button btnEdit = convertView.findViewById(R.id.btn_edit);
 
         Button btnDelete = convertView.findViewById(R.id.btn_delete);
@@ -73,6 +68,8 @@ public class DeckListAdapter extends BaseAdapter {
                         .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
                         .show();
             } else {
+                entry.incrementStudyCount();
+                entry.setLastStudyTime(System.currentTimeMillis());
                 Intent intent = new Intent(context, FlashcardActivity.class);
                 intent.putExtra("deck", entry);
                 context.startActivity(intent);
@@ -87,36 +84,46 @@ public class DeckListAdapter extends BaseAdapter {
             String lastStudyTimeStr = lastStudyTime == 0 ? "Never" : new java.text.SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(new java.util.Date(lastStudyTime));
 
             String recommendation = "You should study again soon.";
-            if (lastStudyTime > 0) {
-                long currentTime = System.currentTimeMillis();
-                long timeSinceLastStudy = currentTime - lastStudyTime;
-                long hoursSinceLastStudy = timeSinceLastStudy / (1000 * 60 * 60);
-                if (hoursSinceLastStudy < 24) {
-                    recommendation = "You should study again in " + (24 - hoursSinceLastStudy) + " hours.";
-                } else {
-                    recommendation = "It's been " + hoursSinceLastStudy + " hours since your last study session. Time to study again!";
+            if (studyCount > 0) {
+                switch (studyCount) {
+                    case 1:  recommendation = "You should study again in 1 day";
+                        break;
+                    case 2:  recommendation = "You should study again in 3 days";
+                        break;
+                    case 3:  recommendation = "You should study again in 7 days";
+                        break;
+                    case 4:  recommendation = "You should study again in 15 days";
+                        break;
+                    case 5:   recommendation = "You should study again in 1 month";
+                        break;
+                    default:  recommendation = "You should study again in 3 months";
                 }
             }
 
-            String message = "Deck Name: " + entry.getName() + "\n" +
+            String message =
                     "Number of flashcards: " + cardCount + "\n" +
                     "Number of times studied: " + studyCount + "\n" +
                     "Last studied: " + lastStudyTimeStr + "\n" +
                     recommendation;
 
             new AlertDialog.Builder(context)
-                    .setTitle("Deck Statistics")
+                    .setTitle("Deck Statistics: " + entry.getName())
                     .setMessage(message)
                     .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
                     .show();
         });
 
 
-        btnDelete.setOnClickListener(v -> {
-            data.remove(position);
-            notifyDataSetChanged();
-            Toast.makeText(context, "Deck deleted", Toast.LENGTH_SHORT).show();
-        });
+        btnDelete.setOnClickListener(v -> new AlertDialog.Builder(context)
+                .setTitle("Delete Deck")
+                .setMessage("Are you sure you want to delete this deck?")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    data.remove(position);
+                    notifyDataSetChanged();
+                    Toast.makeText(context, "Deck deleted", Toast.LENGTH_SHORT).show();
+                })
+                .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
+                .show());
 
         return convertView;
     }
@@ -128,7 +135,6 @@ public class DeckListAdapter extends BaseAdapter {
         input.setHint("Enter new deck name");
         builder.setView(input);
 
-        // Set up the buttons
         builder.setPositiveButton("OK", (dialog, which) -> {
             String newName = input.getText().toString().trim();
             if (!newName.isEmpty()) {
@@ -137,7 +143,6 @@ public class DeckListAdapter extends BaseAdapter {
             }
         });
         builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
-
         builder.show();
     }
 }
