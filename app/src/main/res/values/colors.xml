@@ -2,7 +2,9 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="dark_green">#ccccff</color>
+    <color name="purple">#bb99ff</color>
     <color name="red">#e60000</color>
-    <color name="card_background">#999999</color> <!-- Light Grey -->
+    <color name="blue">#4356E6</color>
+    <color name="my_light_primary">#4356E6</color>
+    <color name="card_background">#999999</color>
 </resources>

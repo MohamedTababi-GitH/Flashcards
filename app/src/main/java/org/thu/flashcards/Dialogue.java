@@ -20,6 +20,8 @@ public class Dialogue {
             if (!deckName.isEmpty()) {
                 DeckEntry.DeckEntries.add(new DeckEntry(deckName));
                 adapter.notifyDataSetChanged();
+                // Save to preferences
+                PreferencesUtil.saveDecks(context, DeckEntry.DeckEntries);
             }
         });
 

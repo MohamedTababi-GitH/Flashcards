@@ -28,8 +28,8 @@ public class FlashcardActivity extends AppCompatActivity {
         nextButton = findViewById(R.id.nextButton);
         Button backButton = findViewById(R.id.backButton);
 
-        nextButton.setBackgroundColor(getResources().getColor(R.color.dark_green));
-        backButton.setBackgroundColor(getResources().getColor(R.color.dark_green));
+        nextButton.setBackgroundColor(getResources().getColor(R.color.purple));
+        backButton.setBackgroundColor(getResources().getColor(R.color.purple));
 
         deck = (DeckEntry) getIntent().getSerializableExtra("deck");
         if (deck != null) {
@@ -82,7 +82,7 @@ public class FlashcardActivity extends AppCompatActivity {
         }
         else {
             nextButton.setText(R.string.next_btn);
-            nextButton.setBackgroundColor(getResources().getColor(R.color.dark_green));
+            nextButton.setBackgroundColor(getResources().getColor(R.color.purple));
         }
     }
 

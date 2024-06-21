@@ -45,17 +45,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        context = this;
         setContentView(R.layout.activity_main);
 
+        context = this;
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DeckEntry firstEntry = new DeckEntry("first deck");
-        DeckEntry.DeckEntries.add(firstEntry);
-        firstEntry.addFlashcard(new Flashcard("first","one"));
-        firstEntry.addFlashcard(new Flashcard("first","one"));
-        firstEntry.addFlashcard(new Flashcard("first","one"));
+        // Load decks from preferences
+        DeckEntry.DeckEntries = PreferencesUtil.loadDecks(context);
+
 
         adapter = new DeckListAdapter(DeckEntry.DeckEntries);
         ListView listView = findViewById(R.id.deck_list);
@@ -99,6 +97,13 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Save decks to preferences
+        PreferencesUtil.saveDecks(context, DeckEntry.DeckEntries);
     }
 
     @Override
@@ -160,6 +165,8 @@ public class MainActivity extends AppCompatActivity {
                         deck.addFlashcard(new Flashcard(question, answer));
 
                         adapter.notifyDataSetChanged();
+                        // Save to preferences
+                        PreferencesUtil.saveDecks(context, DeckEntry.DeckEntries);
                         Toast.makeText(context, "Card added to " + deckName, Toast.LENGTH_SHORT).show();
                         break;
                     }
@@ -321,6 +328,8 @@ public class MainActivity extends AppCompatActivity {
                 }
                 DeckEntry.DeckEntries.add(newDeck);
                 adapter.notifyDataSetChanged();
+                // Save to preferences
+                PreferencesUtil.saveDecks(context, DeckEntry.DeckEntries);
                 Toast.makeText(this, "Deck imported successfully", Toast.LENGTH_SHORT).show();
             }
         } catch (IOException | JSONException e) {

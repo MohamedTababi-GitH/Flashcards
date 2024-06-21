@@ -70,6 +70,7 @@ public class DeckListAdapter extends BaseAdapter {
             } else {
                 entry.incrementStudyCount();
                 entry.setLastStudyTime(System.currentTimeMillis());
+
                 Intent intent = new Intent(context, FlashcardActivity.class);
                 intent.putExtra("deck", entry);
                 context.startActivity(intent);
@@ -120,6 +121,8 @@ public class DeckListAdapter extends BaseAdapter {
                 .setPositiveButton("Yes", (dialog, which) -> {
                     data.remove(position);
                     notifyDataSetChanged();
+                    // Save to preferences
+                    PreferencesUtil.saveDecks(context, data);
                     Toast.makeText(context, "Deck deleted", Toast.LENGTH_SHORT).show();
                 })
                 .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
@@ -140,6 +143,8 @@ public class DeckListAdapter extends BaseAdapter {
             if (!newName.isEmpty()) {
                 data.get(position).setName(newName);
                 notifyDataSetChanged();
+                // Save to preferences
+                PreferencesUtil.saveDecks(context, DeckEntry.DeckEntries);
             }
         });
         builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
