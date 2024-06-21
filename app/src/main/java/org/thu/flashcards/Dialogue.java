@@ -36,13 +36,12 @@ public class Dialogue {
         builder.setTitle("Clear List");
         builder.setMessage("Are you sure you want to clear all decks");
         builder.setPositiveButton("Yes", (dialog, which) -> {
-            // Clear the list
             DeckEntry.DeckEntries.clear();
             adapter.notifyDataSetChanged();
             Toast.makeText(context, "list cleared", Toast.LENGTH_SHORT).show();
         });
         builder.setNegativeButton("No", (dialog, which) -> {
-            dialog.dismiss(); // Dismiss the dialog
+            dialog.dismiss();
         });
         AlertDialog alertDialog = builder.create();
         alertDialog.show();

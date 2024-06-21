@@ -77,7 +77,6 @@ public class DeckListAdapter extends BaseAdapter {
             }
         });
 
-
         btnStats.setOnClickListener(v -> {
             int cardCount = entry.getFlashcards().size();
             int studyCount = entry.getStudyCount();

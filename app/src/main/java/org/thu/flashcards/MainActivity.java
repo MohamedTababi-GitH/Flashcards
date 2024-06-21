@@ -129,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    // method to display list of current decks and select one to add a card to
     private void showSelectDeckDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Select Deck");
@@ -146,6 +147,8 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
+
+    // method to show dialogue for adding a question and an answer for a flashcard
     private void showAddCardDialog(final String deckName) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Add Card to " + deckName);
@@ -179,6 +182,8 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
+
+    // method to show a list of current decks and select one to export
     private void showSelectDeckDialogToShare() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Select Deck to Share");
@@ -205,6 +210,8 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
+
+    // method to show the export file types options
     private void showExportFormatDialog(final DeckEntry selectedDeck) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Select Export Format");
@@ -300,6 +307,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+// tip: this method can be tested by importing a json file that was export by this app or you can specify your own too.
     private void importDeckFromJson(Uri uri) {
         try {
             InputStream inputStream = getContentResolver().openInputStream(uri);
